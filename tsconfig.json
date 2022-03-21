@@ -9,13 +9,22 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "paths": {
+      "@enums/*": ["common/enums/*"],
+      "@decorators/*": ["common/decorators/*"],
+      "@interceptors/*": ["common/interceptors/*"],
+      "@config/*": ["common/config/*"],
+      "@database/*": ["database/*"],
+      "@persistence/*": ["persistence/*"],
+      "@common/*": ["common/*"],
+      "@domain/*": ["domain/*"],
+      "@utils/*": ["utils/*"],
+      "@auth/*": ["auth/*"],
+      "@api/*": ["api/*"]
+    }
+  },
+  "include": ["src/**/*"]
 }
