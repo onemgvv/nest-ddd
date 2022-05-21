@@ -23,7 +23,7 @@ async function bootstrap() {
       cookie: {
         secure: true,
         sameSite: 'none',
-        // domain: 'https://noname.fun',
+        // domain: 'https://example.com',
         httpOnly: true,
       },
     }),

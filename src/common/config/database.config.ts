@@ -15,11 +15,11 @@ export class PostgresConfig {
       username: configService.get('DB_USERNAME'),
       password: configService.get('DB_PASSWORD'),
       synchronize: false,
-      entities: [process.cwd() + '/dist/persistence/app/**/*.entity.js'],
+      entities: [process.cwd() + '/dist/persistence/**/*.entity.js'],
       migrationsTableName: 'migrations',
-      migrations: [process.cwd() + '/src/database/migrations/main/*{.js,.ts}'],
+      migrations: [process.cwd() + '/src/database/migrations/*{.js,.ts}'],
       cli: {
-        migrationsDir: process.cwd() + '/src/database/migrations/main',
+        migrationsDir: process.cwd() + '/src/database/migrations',
       },
     };
   }
