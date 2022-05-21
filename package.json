@@ -1,6 +1,6 @@
 {
   "name": "nestjs-ddd",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "NestJS DDD-app template",
   "author": "Magomed Gasanov <magomedgasanov.03@bk.ru>",
   "license": "MIT",
