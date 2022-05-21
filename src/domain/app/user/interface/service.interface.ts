@@ -1,5 +1,6 @@
 import UserModel from "@domain/app/user/user.model";
 import {ICreateUser} from "@domain/app/user/interface/create.interface";
+import UserEntity from "@persistence/app/user/user.entity";
 
 export default interface UserService {
     /**
@@ -27,9 +28,9 @@ export default interface UserService {
      *
      * @param key
      * @param value
-     * @return {Promise<UserModel>}
+     * @return {Promise<UserEntity>}
      */
-    findOne(key: keyof UserModel, value: any): Promise<UserModel>;
+    findOne(key: keyof UserEntity, value: any): Promise<UserModel>;
 
     /**
      *

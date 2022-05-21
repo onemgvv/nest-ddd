@@ -7,6 +7,7 @@ import {JwtService} from "@nestjs/jwt";
 import UserEntity from "@persistence/app/user/user.entity";
 import {TOKEN_REPOSITORY} from "@config/constants";
 import TokenRepository from "@persistence/app/token/interface/repository.interface";
+import {classToPlain} from "class-transformer";
 
 const TokenRepo = () => Inject(TOKEN_REPOSITORY);
 
@@ -27,12 +28,13 @@ export class TokenServiceImpl implements TokenService {
      *
      */
     createTokens(user: UserModel): Tokens {
-        const accessToken = this.jwtService.sign(user, {
+        const payload = Object.assign({}, user);
+        const accessToken = this.jwtService.sign(payload, {
             secret: process.env.PRIVATE_KEY,
             expiresIn: '1h'
         });
 
-        const refreshToken = this.jwtService.sign(user, {
+        const refreshToken = this.jwtService.sign(payload, {
             secret: process.env.PRIVATE_KEY,
             expiresIn: '30d'
         });
@@ -50,10 +52,12 @@ export class TokenServiceImpl implements TokenService {
      *
      */
     async saveToken(id: number, _token: string): Promise<TokenModel> {
-        const token = await this.tokenRepository.findOne({ where: { refreshToken: _token } });
+        const token = await this.tokenRepository.findOne({ where: { userId: id } });
+        console.log(token);
         if(token) {
             token.refreshToken = _token;
-            return TokenModel.toModel(await this.tokenRepository.save(token));
+            await token.save();
+            return TokenModel.toModel(token);
         }
 
         return TokenModel.toModel(await this.tokenRepository.newToken(id, _token));

@@ -1,11 +1,11 @@
-import { address } from 'ip';
-import { AppModule } from './app.module';
-import { NestFactory } from '@nestjs/core';
+import {address} from 'ip';
+import {AppModule} from './app.module';
+import {NestFactory} from '@nestjs/core';
 import * as compression from 'compression';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser';
-import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import {HttpStatus, ValidationPipe} from '@nestjs/common';
+import {DocumentBuilder, SwaggerModule} from '@nestjs/swagger';
 
 async function bootstrap() {
   const PORT = process.env.PORT;
@@ -41,7 +41,10 @@ async function bootstrap() {
   });
 
   // use global validation pipes
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+  }));
   // set global prefix "api"
   app.setGlobalPrefix('api');
   // global interceptors
@@ -53,7 +56,6 @@ async function bootstrap() {
       'Nestjs DDD Backend API  Documentation created with OpenAPI',
     )
     .setVersion('1.0')
-    .addTag('application')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);

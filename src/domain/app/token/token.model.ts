@@ -1,19 +1,19 @@
 import {TokenEntity} from "@persistence/app/token/token.entity";
 
 export default class TokenModel {
-    private _id: number;
-    private _token: string;
+    private id: number;
+    private token: string;
 
-    get id() { return this._id; }
-    set id(value: number) { this._id = value; }
+    getId() { return this.id; }
+    setId(value: number) { this.id = value; }
 
-    get token() { return this._token; }
-    set token(value: string) { this._token = value; }
+    getToken() { return this.token; }
+    setToken(value: string) { this.token = value; }
 
     static toModel(token: TokenEntity) {
         const model = new TokenModel();
-        model.id = token.id;
-        model.token = token.refreshToken;
+        model.setId(token.id);
+        model.setToken(token.refreshToken);
         return model;
     }
 }

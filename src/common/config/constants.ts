@@ -27,6 +27,7 @@ export const ROLES_NOT_FOUND = 'В системе нет ролей';
 
 export const USER_NOT_FOUND = 'Пользователь не найден';
 export const USER_ALREADY_EXISTS = 'Пользователь с таким адресом уже есть в системе';
+export const USERNAME_EXIST = 'Username {username} занят';
 export const USERS_NOT_FOUND = 'В системе нет пользователей';
 
 export const AUTHORIZATION_EXCEPTION = 'Не верный логин или пароль';

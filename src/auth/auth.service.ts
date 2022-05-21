@@ -8,12 +8,12 @@ import JwtPayload from "@auth/interface/jwt-payload.interface";
 import ILogin from "@auth/interface/login.interface";
 import Tokens from "@domain/app/token/interface/tokens.interface";
 import {
-    AUTHORIZATION_EXCEPTION,
+    AUTHORIZATION_EXCEPTION, SUCCESSFUL_AUTHORIZATION,
     SUCCESSFUL_REGISTER,
     TOKEN_SERVICE,
     USER_ALREADY_EXISTS,
     USER_NOT_FOUND,
-    USER_SERVICE
+    USER_SERVICE, USERNAME_EXIST
 } from "@config/constants";
 import {TokenService} from "@domain/app/token/interface/service.interface";
 import UserService from "@domain/app/user/interface/service.interface";
@@ -55,6 +55,10 @@ export class AuthServiceImpl implements AuthService {
             throw new BadRequestException(USER_ALREADY_EXISTS);
         }
 
+        if(await this.userService.findOne('username', data.username)){
+            throw new BadRequestException(USERNAME_EXIST.replace('{username}', data.username));
+        }
+
         const hashedPassword = await hash(data.password, 8);
         const user = await this.userService.create({ ...data, password: hashedPassword });
         const tokens = await this.authenticate(user);
@@ -73,14 +77,13 @@ export class AuthServiceImpl implements AuthService {
         if(!user) {
             throw new NotFoundException(USER_NOT_FOUND);
         }
-
-        const isMatch = await this.userService.comparePassword(user.id, data.password);
+        const isMatch = await this.userService.comparePassword(user.getId(), data.password);
         if(!isMatch) {
             throw new UnprocessableEntityException(AUTHORIZATION_EXCEPTION);
         }
 
         const tokens = await this.authenticate(user);
-        return ApiResponse.Auth(201, SUCCESSFUL_REGISTER, { tokens, user });
+        return ApiResponse.Auth(200, SUCCESSFUL_AUTHORIZATION, { tokens, user });
     }
 
     /**
@@ -93,7 +96,7 @@ export class AuthServiceImpl implements AuthService {
      */
     private async authenticate(user: UserModel): Promise<Tokens> {
         const tokens = await this.tokenService.createTokens(user);
-        await this.tokenService.saveToken(user.id, tokens.refreshToken);
+        await this.tokenService.saveToken(user.getId(), tokens.refreshToken);
         return tokens;
     }
 

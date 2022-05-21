@@ -75,7 +75,7 @@ export class CustomAuthGuard extends AuthGuard('jwt') {
             const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
                 await this.tokenService.createTokens(user);
 
-            await this.tokenService.saveToken(user.id, newRefreshToken);
+            await this.tokenService.saveToken(user.getId(), newRefreshToken);
 
             request.cookies[ACCESS_TOKEN_NAME] = newAccessToken;
             request.cookies[REFRESH_TOKEN_NAME] = newRefreshToken;

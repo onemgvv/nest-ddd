@@ -1,4 +1,4 @@
-import {Body, Controller, HttpCode, Inject, Post, Res} from '@nestjs/common';
+import {Body, Controller, HttpCode, Inject, Post, Res, UseInterceptors, UsePipes} from '@nestjs/common';
 import {
     AUTH_SERVICE, AUTHORIZATION_EXCEPTION,
     SUCCESSFUL_AUTHORIZATION,
@@ -26,8 +26,8 @@ export class AuthController {
     @ApiResponse({ status: 201, description: SUCCESSFUL_REGISTER })
     @ApiResponse({ status: 400, description: USER_ALREADY_EXISTS })
     @ApiBody({ type: RegisterDto })
-    @HttpCode(201)
     @Post('register')
+    @HttpCode(201)
     async register(@Body() dto: RegisterDto, @Res() response: Response) {
         const { data, ...result } = await this.authService.register(dto);
         const { accessToken, refreshToken } = data.tokens as Tokens;

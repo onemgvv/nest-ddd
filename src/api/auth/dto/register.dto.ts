@@ -1,4 +1,4 @@
-import {Exclude} from "class-transformer";
+import {Exclude, Expose} from "class-transformer";
 import {IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
@@ -9,9 +9,9 @@ export class RegisterDto {
         description: 'Имя',
         example: 'Магомед',
     })
-    @Exclude()
     @IsString()
     @IsOptional()
+    @Expose()
     given_name?: string;
 
     @ApiProperty({
@@ -19,9 +19,9 @@ export class RegisterDto {
         description: 'Фамилия',
         example: 'Гасанов',
     })
-    @Exclude()
     @IsString()
     @IsOptional()
+    @Expose()
     family_name?: string;
 
     @ApiProperty({
@@ -29,9 +29,9 @@ export class RegisterDto {
         description: 'Имя пользователя',
         example: 'onemgvv',
     })
-    @Exclude()
     @IsString()
     @IsNotEmpty()
+    @Expose()
     username: string;
 
     @ApiProperty({
@@ -39,9 +39,9 @@ export class RegisterDto {
         description: 'Email',
         example: 'onemgvv@gmail.com',
     })
-    @Exclude()
     @IsString()
     @IsNotEmpty()
+    @Expose()
     email: string;
 
     @ApiProperty({
@@ -49,8 +49,8 @@ export class RegisterDto {
         description: 'Пароль',
         example: 'СуперСложныйПароль123',
     })
-    @Exclude()
     @IsString()
     @IsNotEmpty()
+    @Expose()
     password: string;
 }

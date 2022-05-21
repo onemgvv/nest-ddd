@@ -14,16 +14,28 @@ export default class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('varchar')
-    given_name: string;
+    @Column({
+        type: 'varchar',
+        nullable: true
+    })
+    giveName: string;
 
-    @Column('varchar')
-    family_name: string;
+    @Column({
+        type: 'varchar',
+        nullable: true
+    })
+    familyName: string;
 
-    @Column('varchar')
+    @Column({
+        type: 'varchar',
+        unique: true
+    })
     email: string;
 
-    @Column('varchar')
+    @Column({
+        type: 'varchar',
+        unique: true
+    })
     username: string;
 
     @Column('varchar')

@@ -1,4 +1,4 @@
-import {Exclude} from "class-transformer";
+import {Exclude, Expose} from "class-transformer";
 import {IsNotEmpty, IsString} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
@@ -9,7 +9,7 @@ export class LoginDto {
         description: 'Email',
         example: 'onemgvv@gmail.com',
     })
-    @Exclude()
+    @Expose()
     @IsString()
     @IsNotEmpty()
     email: string;
@@ -19,7 +19,7 @@ export class LoginDto {
         description: 'Пароль',
         example: 'СуперСложныйПароль123',
     })
-    @Exclude()
+    @Expose()
     @IsString()
     @IsNotEmpty()
     password: string;

@@ -5,6 +5,7 @@ import UserModel from "@domain/app/user/user.model";
 import {ICreateUser} from "@domain/app/user/interface/create.interface";
 import {USER_REPOSITORY} from "@config/constants";
 import UserRepository from '@persistence/app/user/interface/repository.interface';
+import UserEntity from "@persistence/app/user/user.entity";
 
 const UserRepo = () => Inject(USER_REPOSITORY);
 
@@ -22,6 +23,8 @@ export class UserServiceImpl implements UserService {
      */
     async all(): Promise<UserModel[]> {
         const users = await this.userRepository.find();
+        if(!users) return null;
+
         return Promise.all(users.map(user => UserModel.toModel(user)));
     }
 
@@ -34,7 +37,10 @@ export class UserServiceImpl implements UserService {
      *
      */
     async create(dto: ICreateUser): Promise<UserModel> {
-        return UserModel.toModel(await this.userRepository.save(dto));
+        const token = await this.userRepository.save(dto);
+        if(!token) return null;
+
+        return UserModel.toModel(token);
     }
 
     /**
@@ -45,7 +51,10 @@ export class UserServiceImpl implements UserService {
      * @return {Promise<UserModel>}
      */
     async getById(id: number): Promise<UserModel> {
-        return UserModel.toModel(await this.userRepository.findById(id));
+        const user = await this.userRepository.findById(id);
+        if(!user) return null;
+
+        return UserModel.toModel(user);
     }
 
     /**
@@ -54,10 +63,13 @@ export class UserServiceImpl implements UserService {
      *
      * @param key
      * @param value
-     * @return {Promise<UserModel>}
+     * @return {Promise<UserEntity>}
      */
-    async findOne(key: keyof UserModel, value: any): Promise<UserModel> {
-        return UserModel.toModel(await this.userRepository.findByField(key, value));
+    async findOne(key: keyof UserEntity, value: any): Promise<UserModel> {
+        const user = await this.userRepository.findByField(key, value);
+        if(!user) return null;
+
+        return UserModel.toModel(user);
     }
 
     /**
@@ -81,6 +93,9 @@ export class UserServiceImpl implements UserService {
      * @return {Promise<UserModel>}
      */
     async getByToken(token: string): Promise<UserModel> {
-        return UserModel.toModel(await this.userRepository.findByToken(token));
+        const user = await this.userRepository.findByToken(token);
+        if(!user) return null;
+
+        return UserModel.toModel(user);
     }
 }
